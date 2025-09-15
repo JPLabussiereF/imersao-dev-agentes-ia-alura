@@ -16,7 +16,8 @@
 - [PDF com resumo da masterclass](https://fiapcom.sharepoint.com/:b:/s/Alura/EfqhCAwXtPREos7vOsJ4q_YBwfIUT3kJFDP9p82q1ekp7g?e=AYGTv2)
 
 # Aula 01: Classificação de intenções com IA 
-- Key: ?
+
+- Key: LANGCHAIN
 
 ## 🔑 Conceitos para revisar: 
 
@@ -61,6 +62,7 @@
 ![Fluxo](assets/images/Fluxo.png)
 
 # Aula 02: Construindo a base de conhecimento com RAG 
+
 - Key: CHUNKS
 
 ## 🔹 O que são *Embeddings*?
@@ -127,6 +129,102 @@ Você pergunta: *"O que é IA?"*
 - [Pegar a API Key no Google AI Studio](http://goo.gle/alura-apikey)
 - [Baixar PDFs usados na aula](https://fiapcom.sharepoint.com/:f:/s/Alura/EgXUUcDoHDBBosouJgEJfHYBBWuR109bX7XbPfACYk8TUg?e=kqUpj5)
 
+#### Códigos feitos por mim: 
+
+- [Código da Aula 02 (.ipynb)](Aula_2_Imersão_Agentes_IA_Alura.ipynb)
+
+
 # Aula 03: Orquestração do agente com LangGraph
 
+- Key: LANGGRAPH
+
 #### Links:
+
+- [Link do projeto](https://colab.research.google.com/drive/17CGpuWY0M1njllxWD_d6oyXAtA3p3Bs2?usp=sharing)
+- [Acesse o Google Gemini aqui](https://goo.gle/alura-gemini-br)
+- [Acesse o Google AI Studio aqui](https://goo.gle/alura-aistudio-br)
+- [Pegar a API Key no Google AI Studio](http://goo.gle/alura-apikey)
+
+#### Códigos feitos por mim: 
+
+- [Código da Aula 03 (.ipynb)](Aula_3_Imersão_Agentes_IA_Alura.ipynb)
+
+#### Grafo TIDRAW
+
+![Grafo TIDRAW](assets/images/grafo-tidraw.png)
+
+#### Grafo IPython
+
+![Grafo IPython](assets/images/grafo-tidraw.png)
+
+
+
+# Código consolidado em Python (`main.py`)
+
+O arquivo [`main.py`](main.py) contém **todo o código da aula 03 em formato `.py`** para ser rodado diretamente no VS Code (sem precisar do `.ipynb`/Colab).
+
+Ele já está adaptado para:
+
+* Ler variáveis de ambiente a partir do arquivo `.env`.
+* Carregar os PDFs de dentro da pasta `assets/docs`.
+* Executar toda a lógica de **triagem + RAG + orquestração com LangGraph**.
+
+---
+
+## 🚀 Como rodar localmente
+
+1. **Clone o repositório** (ou baixe os arquivos).
+
+   ```bash
+   git clone https://github.com/JPLabussiereF/imersao-dev-agentes-ia-alura.git
+   cd imersao-dev-agentes-ia-alura
+   ```
+
+2. **Crie e ative o ambiente virtual**
+
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate   # Windows
+   source .venv/bin/activate  # Linux/Mac
+   ```
+
+3. **Crie o arquivo `.env`** na raiz do projeto:
+
+   ```ini
+   GOOGLE_API_KEY="SUA_CHAVE_DO_GOOGLE_AQUI"
+   ```
+
+4. **Instale as dependências**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+   > O `requirements.txt` já lista todas as libs necessárias:
+   > `python-dotenv, langchain, langchain-google-genai, google-generativeai, langchain_community, faiss-cpu, langchain-text-splitters, pymupdf, langgraph, pydantic`
+
+5. **Coloque os PDFs na pasta `assets/docs/`**
+   Esses documentos são usados como base de conhecimento para o RAG.
+
+6. **Execute o código**
+
+   ```bash
+   python main.py
+   ```
+
+7. **Veja a saída no terminal**
+   Cada pergunta de teste será processada e exibida assim:
+
+   ```
+   -----------------------------------
+   ▶ Nó: triagem
+   ▶ Nó: auto_resolver
+   ❓ Pergunta: Posso reembolsar a internet?
+   📌 Decisão (triagem): AUTO_RESOLVER | Urgência: BAIXA | Ação Final (fluxo): AUTO_RESOLVER
+   💬 Resposta: Sim, a internet para home office é reembolsável via subsídio mensal...
+   📚 Citações:
+    - Política de Home Office.pdf (pág. 1) → ...
+    - Política de Reembolsos.pdf (pág. 1) → ...
+   ```
+
+---
