@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Desk IA - Carraro Desenvolvimento</title>
+    <link rel="shortcut icon" href="../assets/images/logo-alura.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --alura-blue: #0066CC;
+            --alura-dark-blue: #051933;
+            --alura-green: #00C86F;
+            --alura-light-gray: #F5F5F5;
+            --alura-white: #FFFFFF;
+            --alura-text: #333333;
+            --alura-border: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--alura-light-gray) 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            color: var(--alura-text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--alura-dark-blue) 0%, var(--alura-blue) 100%);
+            color: var(--alura-white);
+            padding: 2rem 0;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(5, 25, 51, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-section {
+            background: var(--alura-white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--alura-border);
+        }
+
+        .input-section h2 {
+            color: var(--alura-dark-blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--alura-dark-blue);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid var(--alura-border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--alura-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--alura-blue) 0%, #0052A3 100%);
+            color: var(--alura-white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-section {
+            background: var(--alura-white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--alura-border);
+        }
+
+        .results-section h2 {
+            color: var(--alura-dark-blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .status-card {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .status-auto {
+            background: #E8F5E8;
+            border-left-color: var(--alura-green);
+        }
+
+        .status-info {
+            background: #FFF4E6;
+            border-left-color: #FF8C00;
+        }
+
+        .status-ticket {
+            background: #FFE6E6;
+            border-left-color: #FF4444;
+        }
+
+        .result-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--alura-dark-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            padding: 0.75rem;
+            background: var(--alura-light-gray);
+            border-radius: 6px;
+            border-left: 3px solid var(--alura-blue);
+        }
+
+        .citations {
+            margin-top: 1rem;
+        }
+
+        .citation-item {
+            background: #F8F9FA;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--alura-green);
+        }
+
+        .citation-header {
+            font-weight: 600;
+            color: var(--alura-dark-blue);
+            margin-bottom: 0.3rem;
+        }
+
+        .citation-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--alura-border);
+            border-left-color: var(--alura-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-bar {
+            background: var(--alura-white);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--alura-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--alura-green);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .status-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🤖 Service Desk IA</h1>
+            <p>Assistente Inteligente para Políticas Internas - Carraro Desenvolvimento</p>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Conectando...</span>
+            </div>
+            <div id="documentsInfo">
+                <span id="docCount">0</span> documentos carregados
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2>🎯 Faça sua pergunta</h2>
+                <form id="questionForm">
+                    <div class="input-group">
+                        <label for="pergunta">Digite sua dúvida ou solicitação:</label>
+                        <textarea 
+                            id="pergunta" 
+                            name="pergunta" 
+                            placeholder="Ex: Posso reembolsar cursos da Alura? Preciso de acesso especial ao sistema X..."
+                            required
+                        ></textarea>
+                    </div>
+                    <button type="submit" class="btn" id="submitBtn">
+                        Enviar Pergunta
+                    </button>
+                </form>
+            </div>
+
+            <div class="results-section">
+                <h2>📋 Resultado</h2>
+                <div id="results">
+                    <p style="text-align: center; color: #666; padding: 2rem;">
+                        Faça uma pergunta para ver o resultado aqui
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis globais
+        const API_BASE = '';
+        let isLoading = false;
+
+        // Elementos DOM
+        const form = document.getElementById('questionForm');
+        const perguntaInput = document.getElementById('pergunta');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultsDiv = document.getElementById('results');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const docCount = document.getElementById('docCount');
+
+        // Verificar status da API
+        async function checkAPIStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/api/status`);
+                const data = await response.json();
+                
+                statusDot.style.background = 'var(--alura-green)';
+                statusText.textContent = 'Sistema Online';
+                docCount.textContent = data.documentos_carregados;
+            } catch (error) {
+                statusDot.style.background = '#FF4444';
+                statusText.textContent = 'Sistema Offline';
+                docCount.textContent = '0';
+            }
+        }
+
+        // Processar pergunta
+        async function processarPergunta(pergunta) {
+            try {
+                const response = await fetch(`${API_BASE}/api/processar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ pergunta })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro ${response.status}: ${response.statusText}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                throw new Error(`Falha na comunicação: ${error.message}`);
+            }
+        }
+
+        // Renderizar resultados
+        function renderResults(data) {
+            const { triagem, resposta, citacoes, acao_final } = data;
+            
+            // Determinar estilo do status
+            let statusClass = 'status-auto';
+            let statusIcon = '✅';
+            if (acao_final === 'PEDIR_INFO') {
+                statusClass = 'status-info';
+                statusIcon = '❓';
+            } else if (acao_final === 'ABRIR_CHAMADO') {
+                statusClass = 'status-ticket';
+                statusIcon = '🎫';
+            }
+
+            let html = `
+                <div class="status-card ${statusClass}">
+                    <strong>${statusIcon} Ação: ${acao_final}</strong>
+                    <br>
+                    <small>Urgência: ${triagem.urgencia} | Decisão: ${triagem.decisao}</small>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">💬 Resposta:</div>
+                    <div class="result-value">${resposta}</div>
+                </div>
+            `;
+
+            // Adicionar citações se existirem
+            if (citacoes && citacoes.length > 0) {
+                html += `
+                    <div class="citations">
+                        <div class="result-label">📚 Referências encontradas:</div>
+                `;
+                
+                citacoes.forEach(cit => {
+                    html += `
+                        <div class="citation-item">
+                            <div class="citation-header">
+                                📄 ${cit.documento} (página ${cit.pagina})
+                            </div>
+                            <div class="citation-text">${cit.trecho}</div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // Mostrar loading
+        function showLoading() {
+            resultsDiv.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span style="margin-left: 1rem;">Processando sua pergunta...</span>
+                </div>
+            `;
+        }
+
+        // Mostrar erro
+        function showError(message) {
+            resultsDiv.innerHTML = `
+                <div class="status-card status-ticket">
+                    <strong>❌ Erro</strong>
+                    <br>
+                    ${message}
+                </div>
+            `;
+        }
+
+        // Event listeners
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (isLoading) return;
+            
+            const pergunta = perguntaInput.value.trim();
+            if (!pergunta) return;
+
+            isLoading = true;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processando...';
+            
+            showLoading();
+
+            try {
+                const resultado = await processarPergunta(pergunta);
+                renderResults(resultado);
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                isLoading = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Pergunta';
+            }
+        });
+
+        // Atalho para enviar com Ctrl+Enter
+        perguntaInput.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAPIStatus();
+            perguntaInput.focus();
+        });
+
+        // Verificar status periodicamente
+        setInterval(checkAPIStatus, 30000);
+    </script>
+</body>
+</html>
