@@ -1,230 +1,106 @@
-# Masterclass: Uma visão geral sobre Agentes de IA
+# 🤖 Service Desk IA - Carraro Desenvolvimento
 
-#### Links:
+Um sistema inteligente de Service Desk que usa IA para triagem automática de solicitações e consulta a políticas internas.
 
-- [Primeiros passos em Inteligência Artificial.](https://www.alura.com.br/artigos/primeiros-passos-em-inteligencia-artificial-ia)
-- [Acesse o Guia de Mergulho](https://alura.tv/guiademergulhoAgentesdeIA)
+## 🚀 Como rodar o projeto
 
+### 1. Preparar o ambiente
 
-# Masterclass Intermediária de Python
+```bash
+# Criar ambiente virtual
+python -m venv venv
 
-#### Links:
+# Ativar o ambiente virtual
+# No Windows:
+venv\Scripts\activate
+# No Linux/Mac:
+source venv/bin/activate
 
-- [Site de apoio](https://guilhermeonrails.github.io/materclass-python-ia-agentes/)
-- [Repo do Git com o material de apoio](https://github.com/guilhermeonrails/materclass-python-ia-agentes)
-- [Colab da materclass](https://colab.research.google.com/drive/1oWdfajl9clgrAuoMfJ3ErrPLXHFCSjvu?usp=sharing)
-- [PDF com resumo da masterclass](https://fiapcom.sharepoint.com/:b:/s/Alura/EfqhCAwXtPREos7vOsJ4q_YBwfIUT3kJFDP9p82q1ekp7g?e=AYGTv2)
+# Instalar dependências
+pip install -r requirements.txt
+```
 
-# Aula 01: Classificação de intenções com IA 
+### 2. Configurar variáveis de ambiente
 
-- Key: LANGCHAIN
+Crie um arquivo `.env` na raiz do projeto:
 
-## 🔑 Conceitos para revisar: 
+```env
+GOOGLE_API_KEY=sua_chave_api_do_google_gemini_aqui
+```
 
-1. **Prompt Engineering (Engenharia de Prompts)**
+**Como obter a API Key do Google Gemini:**
+1. Acesse [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Faça login com sua conta Google
+3. Clique em "Create API Key"
+4. Copie a chave e cole no arquivo `.env`
 
-   * Como escrever instruções claras para a IA.
-   * Como restringir a saída (ex: só JSON, sem explicações).
-   * Diferença entre *System Prompt* (regras fixas) e *Human Prompt* (mensagem do usuário).
+### 3. Estrutura de pastas
 
-2. **Estruturar Saídas**
+Crie a seguinte estrutura:
 
-   * Uso de **Pydantic** para garantir que a resposta seja bem formatada.
-   * Trabalhar com **schemas JSON** (bem comum em APIs).
+```
+projeto/
+├── app.py                 # Backend Flask
+├── main.py               # Seu código original
+├── requirements.txt      # Dependências
+├── .env                 # Variáveis de ambiente
+├── templates/
+│   └── index.html       # Frontend
+└── assets/
+    └── docs/            # Seus PDFs das políticas
+        ├── politica1.pdf
+        ├── politica2.pdf
+        └── ...
+```
 
-3. **LangChain / Frameworks de orquestração**
+### 4. Executar o sistema
 
-   * Encadear prompts e chamadas de IA.
-   * Usar “chains” e “agents”.
-   * Trabalhar com **memória** (IA lembrar de mensagens anteriores).
+```bash
+# Rodar o servidor Flask
+python app.py
+```
 
-4. **Casos reais de uso**
+Acesse: http://localhost:5000
 
-   * Triagem de chamados.
-   * Atendimento ao cliente.
-   * Suporte técnico.
-   * Roteamento de perguntas para áreas certas (RH, TI, Financeiro).
+## 🎯 Como usar
 
-#### Links:
+1. **Digite sua pergunta** no campo de texto
+2. **Clique em "Enviar Pergunta"** ou use `Ctrl+Enter`
+3. **Veja o resultado** com:
+   - Status da triagem (AUTO_RESOLVER, PEDIR_INFO, ABRIR_CHAMADO)
+   - Resposta do sistema
+   - Referências dos documentos (se encontradas)
 
-- [Link do projeto](https://colab.research.google.com/drive/1NiBLK4-FUC6D_B8V5CN6bUXPnCC11wmz?usp=sharing)
-- [Acesse o Google Gemini aqui](https://goo.gle/alura-gemini-br)
-- [Acesse o Google AI Studio aqui](https://goo.gle/alura-aistudio-br)
-- [Pegar a API Key no Google AI Studio](http://goo.gle/alura-apikey)
+## 🎨 Paleta de cores Alura
 
-#### Códigos feitos por mim: 
+- **Azul principal**: #0066CC
+- **Azul escuro**: #051933  
+- **Verde**: #00C86F
+- **Cinza claro**: #F5F5F5
+- **Branco**: #FFFFFF
 
-- [Código da Aula 01 (.ipynb)](aula_1_imersão_agentes_ia_alura.py)
-- [Código de prática da Aula 01](Self-taught/triagem_helpdesk.py)
+## 📋 Funcionalidades
 
-#### Fluxo: 
+- ✅ **Triagem inteligente** de solicitações
+- ✅ **RAG (Retrieval Augmented Generation)** com documentos PDF
+- ✅ **Interface responsiva** com design Alura
+- ✅ **Status em tempo real** do sistema
+- ✅ **Citações** dos documentos consultados
+- ✅ **Workflow** com LangGraph
 
-![Fluxo](assets/images/Fluxo.png)
+## 🔧 Troubleshooting
 
-# Aula 02: Construindo a base de conhecimento com RAG 
+**Erro de API Key:**
+- Verifique se a `GOOGLE_API_KEY` está correta no arquivo `.env`
 
-- Key: CHUNKS
+**Nenhum documento carregado:**
+- Certifique-se que os PDFs estão na pasta `assets/docs/`
+- Verifique se os arquivos não estão corrompidos
 
-## 🔹 O que são *Embeddings*?
+## 📱 Interface
 
-* Imagine que cada palavra, frase ou documento precisa ser transformado em **números** para que a máquina entenda.
-* O *embedding* é justamente essa **tradução para números**: ele pega um texto e o transforma em uma lista de números chamada **vetor**.
-* Esses números não são aleatórios: eles guardam o **significado** do texto.
-  Exemplo: "carro" e "automóvel" vão virar vetores parecidos, porque significam quase a mesma coisa.
-
-➡️ Ou seja: *embedding* = representação numérica (com significado) de um texto.
-
----
-
-## 🔹 O que são *Vetores*?
-
-* Vetor = a lista de números que o embedding gera.
-  Exemplo simplificado:
-
-  * "cachorro" → \[0.12, 0.98, 0.45, ...]
-  * "gato" → \[0.11, 0.95, 0.47, ...]
-* Como os vetores ficam em um **espaço matemático**, dá para medir a **distância** entre eles.
-
-  * Quanto menor a distância → mais parecidos os textos.
-  * Exemplo: "cachorro" está mais perto de "gato" do que de "avião".
-
----
-
-## 🔹 Onde entra isso em IA / LangChain / RAG?
-
-1. **RAG (Retrieval-Augmented Generation)**
-
-   * Você faz uma pergunta → ela vira embedding (vetor).
-   * O sistema compara esse vetor com os vetores do banco de dados (textos já transformados em embedding).
-   * Ele recupera os mais parecidos → passa para o modelo de IA → o modelo responde com base nesses textos.
-
-2. **LangChain**
-
-   * Ele é como um “orquestrador”: pega sua pergunta, gera embedding, busca os vetores parecidos, junta os textos e manda para o modelo de linguagem responder.
-   * É muito usado para criar *chatbots com base em documentos*.
-
----
-
-## 🔹 Analogia fácil
-
-* Pense em um **GPS de significados**.
-
-  * Cada palavra ou texto é um ponto no mapa (o vetor).
-  * O embedding é o processo de colocar esse ponto no lugar certo no mapa.
-  * Para buscar algo, você procura os pontos mais próximos do seu.
-
-Exemplo prático:
-Você pergunta: *"O que é IA?"*
-
-* O sistema cria o vetor da sua pergunta.
-* Ele procura os textos mais próximos no mapa (por exemplo, artigos que falam de "Inteligência Artificial").
-* Depois junta e devolve a resposta.
-
-
-#### Links:
-
-- [Link do projeto](https://colab.research.google.com/drive/1nErQMVPdPlp6HOUnE4rLtHj30WQz-fDH?usp=sharing)
-- [Acesse o Google Gemini aqui](https://goo.gle/alura-gemini-br)
-- [Acesse o Google AI Studio aqui](https://goo.gle/alura-aistudio-br)
-- [Pegar a API Key no Google AI Studio](http://goo.gle/alura-apikey)
-- [Baixar PDFs usados na aula](https://fiapcom.sharepoint.com/:f:/s/Alura/EgXUUcDoHDBBosouJgEJfHYBBWuR109bX7XbPfACYk8TUg?e=kqUpj5)
-
-#### Códigos feitos por mim: 
-
-- [Código da Aula 02 (.ipynb)](Aula_2_Imersão_Agentes_IA_Alura.ipynb)
-
-
-# Aula 03: Orquestração do agente com LangGraph
-
-- Key: LANGGRAPH
-
-#### Links:
-
-- [Link do projeto](https://colab.research.google.com/drive/17CGpuWY0M1njllxWD_d6oyXAtA3p3Bs2?usp=sharing)
-- [Acesse o Google Gemini aqui](https://goo.gle/alura-gemini-br)
-- [Acesse o Google AI Studio aqui](https://goo.gle/alura-aistudio-br)
-- [Pegar a API Key no Google AI Studio](http://goo.gle/alura-apikey)
-
-#### Códigos feitos por mim: 
-
-- [Código da Aula 03 (.ipynb)](Aula_3_Imersão_Agentes_IA_Alura.ipynb)
-
-#### Grafo TIDRAW
-
-![Grafo TIDRAW](assets/images/grafo-tidraw.png)
-
-#### Grafo IPython
-
-![Grafo IPython](assets/images/grafo-tidraw.png)
-
-
-
-# Código consolidado em Python (`main.py`)
-
-O arquivo [`main.py`](main.py) contém **todo o código da aula 03 em formato `.py`** para ser rodado diretamente no VS Code (sem precisar do `.ipynb`/Colab).
-
-Ele já está adaptado para:
-
-* Ler variáveis de ambiente a partir do arquivo `.env`.
-* Carregar os PDFs de dentro da pasta `assets/docs`.
-* Executar toda a lógica de **triagem + RAG + orquestração com LangGraph**.
-
----
-
-## 🚀 Como rodar localmente
-
-1. **Clone o repositório** (ou baixe os arquivos).
-
-   ```bash
-   git clone https://github.com/JPLabussiereF/imersao-dev-agentes-ia-alura.git
-   cd imersao-dev-agentes-ia-alura
-   ```
-
-2. **Crie e ative o ambiente virtual**
-
-   ```bash
-   python -m venv .venv
-   .venv\Scripts\activate   # Windows
-   source .venv/bin/activate  # Linux/Mac
-   ```
-
-3. **Crie o arquivo `.env`** na raiz do projeto:
-
-   ```ini
-   GOOGLE_API_KEY="SUA_CHAVE_DO_GOOGLE_AQUI"
-   ```
-
-4. **Instale as dependências**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-   > O `requirements.txt` já lista todas as libs necessárias:
-   > `python-dotenv, langchain, langchain-google-genai, google-generativeai, langchain_community, faiss-cpu, langchain-text-splitters, pymupdf, langgraph, pydantic`
-
-5. **Coloque os PDFs na pasta `assets/docs/`**
-   Esses documentos são usados como base de conhecimento para o RAG.
-
-6. **Execute o código**
-
-   ```bash
-   python main.py
-   ```
-
-7. **Veja a saída no terminal**
-   Cada pergunta de teste será processada e exibida assim:
-
-   ```
-   -----------------------------------
-   ▶ Nó: triagem
-   ▶ Nó: auto_resolver
-   ❓ Pergunta: Posso reembolsar a internet?
-   📌 Decisão (triagem): AUTO_RESOLVER | Urgência: BAIXA | Ação Final (fluxo): AUTO_RESOLVER
-   💬 Resposta: Sim, a internet para home office é reembolsável via subsídio mensal...
-   📚 Citações:
-    - Política de Home Office.pdf (pág. 1) → ...
-    - Política de Reembolsos.pdf (pág. 1) → ...
-   ```
-
----
+A interface foi desenvolvida com:
+- **Responsiva** para desktop e mobile
+- **Paleta oficial** da Alura
+- **Design limpo** e intuitivo
+- **Feedback visual** em tempo real
